@@ -52,10 +52,11 @@
 <nav>
 	<ul>
 		<li><a aria-current='{segment === undefined ? "page" : undefined}' href='.'>home</a></li>
-		<li><a aria-current='{segment === "bounce" ? "page" : undefined}' href='bounce'>bounce</a></li>
-		<li><a aria-current='{segment === "about" ? "page" : undefined}' href='svg_animations'>svg animations</a></li>
-		<li><a aria-current='{segment === "randomWalk" ? "page" : undefined}' href='randomWalk'>random walk</a></li>
-		<li><a aria-current='{segment === "d3Canvas" ? "page" : undefined}' href='d3Canvas'>d3Canvas</a></li>
+		<li><a aria-current='{segment === "bounce" ? "page" : undefined}' href='bounce'>bounce window(canvas)</a></li>
+		<li><a aria-current='{segment === "about" ? "page" : undefined}' href='svg_animations'>simple svg animations</a></li>
+		<li><a aria-current='{segment === "randomWalk" ? "page" : undefined}' href='randomWalk'>d3 diffused brownian motion</a></li>
+		<li><a aria-current='{segment === "d3Canvas" ? "page" : undefined}' href='d3Canvas'>d3 Canvas animation</a></li>
+		<li><a aria-current='{segment === "d3CanvasWalk" ? "page" : undefined}' href='d3CanvasWalk'>d3 + Canvas diffused brownian motion</a></li>
 
 		<!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
 		     the blog data when we hover over the link or tap it on a touchscreen -->

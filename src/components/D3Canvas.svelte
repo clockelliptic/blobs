@@ -7,6 +7,7 @@
     style={`
         width: ${canvasWidth}px;
         height: ${canvasHeight}px;
+        overflow: hidden;
     `}
 ></canvas>
 
@@ -26,8 +27,8 @@
 
     /* Canvas setup */
     let canvas, 
-        canvasWidth = 800, 
-        canvasHeight = 800;
+        canvasWidth = 0, 
+        canvasHeight = 0;
 
     /* animation settings */
     const duration = 1500;
@@ -36,9 +37,9 @@
     let currLayout = {i: 0};
 
     /* data */
-    const numPoints = 1000;
-    const pointWidth = 6,
-          pointMargin = 8;
+    const numPoints = 7000;
+    const pointWidth = 4,
+          pointMargin = 6;
     const points = createPoints(numPoints, pointWidth, canvasWidth, canvasHeight);
 
     /* curried helpers */
@@ -50,13 +51,17 @@
 
     const layouts = [
           toSine,
+          toPhyllotaxis,
+          toSpiral,
+          toSine,
           toPhyllotaxis
     ];
 
     afterUpdate(() => { 
         canvasWidth = window.innerWidth;
         canvasHeight = window.innerHeight;  
-        const screenScale = window.devicePixelRatio || 1;   
+        const screenScale = 1; //window.devicePixelRatio || 1;   
+        console.log(screenScale)
         canvas.getContext('2d').scale(screenScale, screenScale);
         // start the animation
         animate( useDraw, 

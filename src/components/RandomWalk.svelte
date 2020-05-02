@@ -42,7 +42,7 @@
 <svg id="canvas"></svg>
 
 <script>
-    import { onMount } from 'svelte';
+    import { onMount, afterUpdate } from 'svelte';
     import * as d3 from 'd3'
     import { forceSurface, forceBounce } from './d3-force-utils'
 
@@ -51,7 +51,7 @@
     let temp = 5;
     let onTemperatureChange;
 
-	onMount(() => {
+	afterUpdate(() => {
         const GAS_DENSITY = 0.0001, // particles per sq px
             NUM_DIFFUSERS = 5,
             DIFFUSER_RADIUS = 50,

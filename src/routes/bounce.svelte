@@ -24,9 +24,16 @@
 </div>
 
 <script>
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import Hammer from './bounce/hammer'
 	import init from './bounce/initBounce2'
+
+	const getCanvas = () => document
+								? document.getElementById('canvas')
+								: none;
+	const getBounceContainer = () => document
+								? document.querySelector('#bounceContainer')
+								: none;
 
 	onMount(() => {
 		window.requestAnimFrame = (() => 
@@ -42,6 +49,16 @@
 
 		init(Hammer);
 	});
+
+	onDestroy(() => {
+		if (getCanvas() && getBounceContainer()) {
+			const canvas = getCanvas()
+			const width = getBounceContainer().clientWidth;
+			const height = getBounceContainer().clientHeight;
+			const ctx = canvas.getContext("2d");
+			ctx.clearRect(0, 0, width, height);
+		}
+	})
 
 	
 </script>
