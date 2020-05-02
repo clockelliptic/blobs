@@ -114,7 +114,7 @@ export default function init(Hammer) {
         }
     }
 
-    function collideWithEdge() {
+    function collideWithContainer() {
         for (var i=0; i<nParts; ++i) {
             if (x[i] < 0) {
                 x[i] = 0;
@@ -224,7 +224,7 @@ export default function init(Hammer) {
         for (var i=0; i<3; ++i) {
             integrateSegments(tStep);
             constrainBlobEdges();
-            collideWithEdge();
+            collideWithContainer();
             collideWithMouse();
         }
 
@@ -300,12 +300,61 @@ export default function init(Hammer) {
                 var a2 = 2*Math.PI * ((i+1) / n);
                 var p4 = [ring.width/2 + Math.sin(a1) * ring.width/2, ring.height/2 + Math.cos(a1) * ring.height/2];
                 var p5 = [ring.width/2 + Math.sin(a2) * ring.width/2, ring.height/2 + Math.cos(a2) * ring.height/2];
-                textureMap(ctx, ring, [{x:p1[0],y:p1[1],u:ring.width/2,v:ring.height/2}, {x:p2[0],y:p2[1],u:p4[0],v:p4[1]}, {x:p3[0],y:p3[1],u:p5[0],v:p5[1]}]);
+                textureMap(ctx, ring, [
+                    {
+                        x:p1[0],
+                        y:p1[1],
+                        u:ring.width/2,
+                        v:ring.height/2
+                    }, 
+                    {
+                        x:p2[0],
+                        y:p2[1],
+                        u:p4[0],
+                        v:p4[1]
+                    }, 
+                    {
+                        x:p3[0],
+                        y:p3[1],
+                        u:p5[0],
+                        v:p5[1]
+                    }
+                ]);
             }
         }
     }
 
-    //http://stackoverflow.com/questions/4774172/image-manipulation-and-texture-mapping-using-html5-canvas
+    
+    /*
+                    TEXTURE MAPPING
+
+        see: http://stackoverflow.com/questions/4774172/image-manipulation-and-texture-mapping-using-html5-canvas
+             https://en.wikipedia.org/wiki/Cramer's_rule
+             https://en.wikipedia.org/wiki/Rule_of_Sarrus
+        
+        """
+            Those ugly strange formulas for all those "delta" variables are used to solve two linear systems of three equations in three unknowns using Cramer's method and Sarrus scheme for 3x3 determinants.
+
+            More specifically we are looking for the values of a, b, ... f so that the following equations are satisfied
+
+                a*u0 + b*v0 + c = x0
+                a*u1 + b*v1 + c = x1
+                a*u2 + b*v2 + c = x2
+
+                d*u0 + e*v0 + f = y0
+                d*u1 + e*v1 + f = y1
+                d*u2 + e*v2 + f = y2
+
+            delta is the determinant of the matrix
+
+                u0  v0  1
+                u1  v1  1
+                u2  v2  1
+
+            and for example delta_a is the determinant of the same matrix when you replace the first column with x0, x1, x2. With these you can compute a = delta_a / delta.
+        """ - stackoverflow
+    */
+
     function textureMap(ctx, texture, pts) {
         var x0 = pts[0].x, x1 = pts[1].x, x2 = pts[2].x;
         var y0 = pts[0].y, y1 = pts[1].y, y2 = pts[2].y;

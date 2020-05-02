@@ -52,7 +52,10 @@
 <nav>
 	<ul>
 		<li><a aria-current='{segment === undefined ? "page" : undefined}' href='.'>home</a></li>
-		<li><a aria-current='{segment === "about" ? "page" : undefined}' href='about'>about</a></li>
+		<li><a aria-current='{segment === "bounce" ? "page" : undefined}' href='bounce'>bounce</a></li>
+		<li><a aria-current='{segment === "about" ? "page" : undefined}' href='svg_animations'>svg animations</a></li>
+		<li><a aria-current='{segment === "randomWalk" ? "page" : undefined}' href='randomWalk'>random walk</a></li>
+		<li><a aria-current='{segment === "d3Canvas" ? "page" : undefined}' href='d3Canvas'>d3Canvas</a></li>
 
 		<!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
 		     the blog data when we hover over the link or tap it on a touchscreen -->
