@@ -58,7 +58,7 @@
     import { createPoints, randomLayout, sineLayout, spiralLayout, gridLayout, phyllotaxisLayout } from './utils/d3-animation/layouts'
     import { animate } from './utils/d3-animation/animate'
     import { forceSurface, forceBounce } from './utils/d3-force'
-    import { randomVelocity, generateParticles } from './utils/d3-gas/gas'
+    import { randomVelocity, graphemes } from './utils/d3-gas/gas'
     import * as d3 from 'd3'
 
     const d3forceBounce = forceBounce()
@@ -79,7 +79,7 @@
     /* data */
     const GAS_DENSITY = 0.00001, // particles per sq px
           numDiffusers = 7,
-          DIFFUSER_RADIUS = 70,
+          DIFFUSER_RADIUS = 15,
           GAS_PARTICLE_RADIUS = 10;
     let	TEMP = 1,
         numGasParticles = Math.round(canvasWidth * canvasHeight * GAS_DENSITY);;
@@ -99,13 +99,21 @@
 			}
         )();
 
-        const forceSim = d3.forceSimulation()
+        const {particles, links} = graphemes(
+                                    TEMP, 
+                                    numDiffusers, DIFFUSER_RADIUS,
+                                    numGasParticles, GAS_PARTICLE_RADIUS,
+                                    canvasWidth, canvasHeight
+                                )()
+
+        const forceSim = d3.forceSimulation(particles)
             .alphaDecay(0)
             .velocityDecay(0)
             .on('tick', particleDigest)
             .force('bounce', forceBounce()
                 .radius(d => d.r)
             )
+            .force('link', d3.forceLink(links).distance(7).strength(0.2))
             .force('container', forceSurface()
                 .surfaces([
                     {from: {x:0,y:0}, to: {x:0,y:canvasHeight}},
@@ -115,12 +123,6 @@
                 ])
                 .oneWay(true)
                 .radius(d => d.r)
-            )
-            .nodes(generateParticles(
-                    TEMP, 
-                    numDiffusers, DIFFUSER_RADIUS,
-                    numGasParticles, GAS_PARTICLE_RADIUS,
-                    canvasWidth, canvasHeight)
             );
         forceSim.stop()
 
@@ -136,7 +138,7 @@
             console.log("update")
             requestAnimFrame(update);
         }
-         
+        
         onTemperatureChange = function (temp) {
             let updatedParticles = forceSim.nodes().map(node => {
                 return node.r === DIFFUSER_RADIUS ? node : {
@@ -145,7 +147,7 @@
                     vx: node.vx * Math.sqrt(temp) / Math.sqrt(TEMP),
                     vy: node.vy * Math.sqrt(temp) / Math.sqrt(TEMP),
                     r: GAS_PARTICLE_RADIUS,
-                    color: 'rgba(0,0,0,0.0)'
+                    color: 'rgba(0,0,0,0.5)'
                 };
             })
             forceSim.nodes(updatedParticles);

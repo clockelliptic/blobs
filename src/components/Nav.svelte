@@ -55,6 +55,7 @@
 		<li><a aria-current='{segment === "bounce" ? "page" : undefined}' href='bounce'>bounce window(canvas)</a></li>
 		<li><a aria-current='{segment === "about" ? "page" : undefined}' href='svg_animations'>simple svg animations</a></li>
 		<li><a aria-current='{segment === "randomWalk" ? "page" : undefined}' href='randomWalk'>d3 diffused brownian motion</a></li>
+		<li><a aria-current='{segment === "gooeyNodes" ? "page" : undefined}' href='gooeyNodes'>d3 gooey</a></li>
 		<li><a aria-current='{segment === "d3Canvas" ? "page" : undefined}' href='d3Canvas'>d3 Canvas animation</a></li>
 		<li><a aria-current='{segment === "d3CanvasWalk" ? "page" : undefined}' href='d3CanvasWalk'>d3 + Canvas diffused brownian motion</a></li>
 
