@@ -21,6 +21,18 @@ export default {
 		input: config.client.input(),
 		output: config.client.output(),
 		plugins: [
+			/*{
+				name: 'copy-worker',
+				load() {
+				  this.addWatchFile(path.resolve('./src/blobWorker.js'));
+				},
+				generateBundle() {
+				  fs.copyFileSync(
+					path.resolve('./src/blobWorker.js'),
+					path.resolve('./public/build/blobWorker.js')
+				  );
+				}
+			},*/
 			replace({
 				'process.browser': true,
 				'process.env.NODE_ENV': JSON.stringify(mode)
@@ -33,9 +45,14 @@ export default {
 			}),
 			resolve({
 				browser: true,
-				dedupe: ['svelte']
+				dedupe: ['svelte'],
+				preferBuiltins: false
 			}),
-			commonjs(),
+			commonjs({
+			  namedExports: {
+				"resource-loader": ["Resource"]
+			  }
+			}),
 
 			legacy && babel({
 				extensions: ['.js', '.mjs', '.html', '.svelte'],
@@ -98,8 +115,6 @@ export default {
 			}),
 			commonjs(),
 			!dev && terser()
-		],
-
-		onwarn,
+		]
 	}
 };
